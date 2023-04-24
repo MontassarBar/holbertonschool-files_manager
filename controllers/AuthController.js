@@ -18,7 +18,7 @@ class AuthController {
         return res.status(401).send({ error: 'Unauthorized' });
     }
     const user = await dbClient.db.collection('users').find({ email, password: sha1(password) }).toArray();
-    if (!user) {
+    if (user.length == 0) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
     const token = uuidv4();
