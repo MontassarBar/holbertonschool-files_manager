@@ -14,6 +14,9 @@ class AuthController {
     const auth = new Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':');
     const email = auth[0];
     const password = auth[1];
+    if (!email || !password){
+        return res.status(401).send({ error: 'Unauthorized' });
+    }
     const user = await dbClient.db.collection('users').find({ email, password: sha1(password) }).toArray();
     if (!user) {
       return res.status(401).send({ error: 'Unauthorized' });
