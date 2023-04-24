@@ -32,7 +32,7 @@ class UsersController {
       return res.status(401).send({ error: 'Unauthorized' });
     }
     const user = await dbClient.db.collection('users').find({ _id: ObjectId(userId) }).toArray();
-    if (user.length == 0) {
+    if (user.length === 0) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
     return res.status(200).send({ id: user[0]._id, email: user[0].email });
