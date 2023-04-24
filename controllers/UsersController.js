@@ -35,7 +35,7 @@ class UsersController {
     if (!user) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
-    return res.send({ id: userId, email: user[0].email });
+    return res.send({ id: user._id, email: user[0].email });
   }
 }
 
