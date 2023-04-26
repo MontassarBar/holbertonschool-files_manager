@@ -2,6 +2,7 @@ const express = require('express');
 const AppController = require('../controllers/AppController');
 const UsersController = require('../controllers/UsersController');
 const AuthController = require('../controllers/AuthController');
+const FilesController = require('../controllers/FilesController');
 
 function routes(app) {
   const router = express.Router();
@@ -30,6 +31,10 @@ function routes(app) {
 
   router.get('/users/me', (req, res) => {
     UsersController.getMe(req, res);
+  });
+
+  router.post('/files', (req, res) => {
+    FilesController.postUpload(req, res);
   });
 }
 
