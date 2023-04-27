@@ -154,7 +154,7 @@ class FilesController {
     const updatedFile = await dbClient.db.collection('files').find({ _id: ObjectId(paramId), userId: user[0]._id }).toArray();
     return res.status(200).send({
       id: updatedFile[0]._id,
-      userId: updatedFile[0]._userId,
+      userId: updatedFile[0].userId,
       name: updatedFile[0].name,
       type: updatedFile[0].type,
       isPublic: updatedFile[0].isPublic,
@@ -184,7 +184,7 @@ class FilesController {
     const updatedFile = await dbClient.db.collection('files').find({ _id: ObjectId(paramId), userId: user[0]._id }).toArray();
     return res.status(200).send({
       id: updatedFile[0]._id,
-      userId: updatedFile[0]._userId,
+      userId: updatedFile[0].userId,
       name: updatedFile[0].name,
       type: updatedFile[0].type,
       isPublic: updatedFile[0].isPublic,
