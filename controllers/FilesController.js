@@ -122,7 +122,7 @@ class FilesController {
       return res.status(401).send({ error: 'Unauthorized' });
     }
     const parentId = req.query.parentId || '0';
-    const page = req.query.page
+    const page = req.query.page || '0';
     if (parentId === 0){
     const files = await dbClient.db.collection('files').find({parentId: parentId}).toArray()
     return res.status(200).send(files.slice(page * 20));
