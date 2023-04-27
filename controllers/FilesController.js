@@ -149,15 +149,14 @@ class FilesController {
     if (file.length === 0){
         return res.status(404).send({ error: 'Not found' });
     }
-    await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: true } })
-    file = await dbClient.db.collection('files').find({ _id: ObjectId(paramId), userId: user[0]._id }).toArray();
+    const updatedFile = await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: true } })
     return res.status(200).send({
-      id: file[0]._id,
-        userId: file[0]._userId,
-        name: file[0].name,
-        type: file[0].type,
-        isPublic: file[0].isPublic,
-        parentId: file[0].parentId,
+      id: updatedFile[0]._id,
+      userId: updatedFile[0]._userId,
+      name: updatedFile[0].name,
+      type: updatedFile[0].type,
+      isPublic: updatedFile[0].isPublic,
+      parentId: updatedFile[0].parentId,
     });
   }
   
@@ -179,15 +178,14 @@ class FilesController {
     if (file.length === 0){
         return res.status(404).send({ error: 'Not found' });
     }
-    await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: false } })
-    file = await dbClient.db.collection('files').find({ _id: ObjectId(paramId), userId: user[0]._id }).toArray();
+    const updatedFile = await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: false } })
     return res.status(200).send({
-      id: file[0]._id,
-        userId: file[0]._userId,
-        name: file[0].name,
-        type: file[0].type,
-        isPublic: file[0].isPublic,
-        parentId: file[0].parentId,
+      id: updatedFile[0]._id,
+      userId: updatedFile[0]._userId,
+      name: updatedFile[0].name,
+      type: updatedFile[0].type,
+      isPublic: updatedFile[0].isPublic,
+      parentId: updatedFile[0].parentId,
     });
   }
 }
