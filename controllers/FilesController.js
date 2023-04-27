@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ObjectId } from 'mongodb';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
+import { updateDelaySet } from 'bull/lib/scripts';
 
 const fs = require('fs');
 
@@ -149,7 +150,8 @@ class FilesController {
     if (file.length === 0){
         return res.status(404).send({ error: 'Not found' });
     }
-    const updatedFile = await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: true } })
+    await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: true } })
+    const updatedFile = await dbClient.db.collection('files').find({ _id: ObjectId(paramId), userId: user[0]._id }).toArray();
     return res.status(200).send({
       id: updatedFile[0]._id,
       userId: updatedFile[0]._userId,
@@ -178,7 +180,8 @@ class FilesController {
     if (file.length === 0){
         return res.status(404).send({ error: 'Not found' });
     }
-    const updatedFile = await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: false } })
+    await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: false } });
+    const updatedFile = await dbClient.db.collection('files').find({ _id: ObjectId(paramId), userId: user[0]._id }).toArray();
     return res.status(200).send({
       id: updatedFile[0]._id,
       userId: updatedFile[0]._userId,
