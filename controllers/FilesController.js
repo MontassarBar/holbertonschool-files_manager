@@ -150,7 +150,7 @@ class FilesController {
         return res.status(404).send({ error: 'Not found' });
     }
     const updatedFile = await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: true } })
-    return res.status(201).send({
+    return res.status(200).send({
       id: updatedFile[0]._id,
       userId: updatedFile[0]._userId,
       name: updatedFile[0].name,
@@ -179,7 +179,7 @@ class FilesController {
         return res.status(404).send({ error: 'Not found' });
     }
     const updatedFile = await dbClient.db.collection('files').updateOne({_id: ObjectId(paramId)}, { $set: { isPublic: false } })
-    return res.status(201).send({
+    return res.status(200).send({
       id: updatedFile[0]._id,
       userId: updatedFile[0]._userId,
       name: updatedFile[0].name,
