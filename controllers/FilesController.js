@@ -79,6 +79,57 @@ class FilesController {
       parentId: req.body.parentId || 0,
     });
   }
+
+  static async getShow(req, res){
+    const token = req.headers['x-token'];
+    if (!token) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+    const userId = await redisClient.get(`auth_${token}`);
+    if (!userId) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+    const user = await dbClient.db.collection('users').find({ _id: ObjectId(userId) }).toArray();
+    if (user.length === 0) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+    const paramId = req.params.id || '';
+    const file = await dbClient.db.collection('files').find({ _id: ObjectId(paramId), userId: user[0]._id }).toArray();
+    if (file.length === 0){
+        return res.status(404).send({ error: 'Not found' });
+    }
+    return res.status(201).send({
+        id: file[0]._id,
+        userId: file[0]._userId,
+        name: file[0].name,
+        type: file[0].type,
+        isPublic: file[0].isPublic,
+        parentId: file[0].parentId,
+      });
+  }
+
+  static async getIndex(req, res){
+    const token = req.headers['x-token'];
+    if (!token) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+    const userId = await redisClient.get(`auth_${token}`);
+    if (!userId) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+    const user = await dbClient.db.collection('users').find({ _id: ObjectId(userId) }).toArray();
+    if (user.length === 0) {
+      return res.status(401).send({ error: 'Unauthorized' });
+    }
+    const parentId = req.query.parentId || '0';
+    const page = req.query.page
+    if (parentId === 0){
+    const files = await dbClient.db.collection('files').find({parentId: parentId}).toArray()
+    return res.status(200).send(files.slice(page * 20));
+    }
+    const files = await dbClient.db.collection('files').find({parentId: ObjectId(parentId)}).toArray()
+    return res.status(200).send(files.slice(page * 20));
+  }
 }
 
 module.exports = FilesController;
