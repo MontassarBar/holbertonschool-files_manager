@@ -125,10 +125,10 @@ class FilesController {
     const page = req.query.page || '0';
     if (parentId === 0){
     const files = await dbClient.db.collection('files').find({parentId: parentId}).toArray()
-    return res.status(200).send(files.slice(page * 20));
+    return res.status(200).send(files);
     }
     const files = await dbClient.db.collection('files').find({parentId: ObjectId(parentId)}).toArray()
-    return res.status(200).send(files.slice(page * 20));
+    return res.status(200).send(files);
   }
 }
 
